@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>
+                <a href="/">Home</a>
+                <a href="/logout">Sign out</a>
+            </li>
+        </ul>
+    </nav>
+    <h1>[[${Principal}]], you are visiting [[${visitingUser}]]'s page</h1>
+    <form action="/userDetails" method="POST">
+        <input type="hidden" name="id" th:value="${userIdWeAreVisiting}">
+        <input type="datetime-local" name="date" hidden >
+        Message: <input type="text" name="">
+        <input type="submit" name="Post">
+    </form>
+
+
+</body>
+</html>

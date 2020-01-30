@@ -3,6 +3,9 @@ package com.jbajracharya.codefellowship.controller;
 import com.jbajracharya.codefellowship.model.ApplicationUser;
 import com.jbajracharya.codefellowship.model.ApplicationUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,8 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.jws.WebParam;
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 
 @Controller
@@ -34,7 +39,11 @@ public class ApplicationUserController {
         // save user to db
         applicationUserRepository.save(newUser);
 
-        return new RedirectView("/");
+        // maybe autologin?
+        Authentication authentication = new UsernamePasswordAuthenticationToken(newUser, null, new ArrayList<>());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return new RedirectView("/profile");
     }
 
     @GetMapping ("/log-in")
@@ -55,6 +64,8 @@ public class ApplicationUserController {
         ApplicationUser user = applicationUserRepository.findById(id).get();
         m.addAttribute("Principal", p.getName());
         m.addAttribute("visitingUser", user.getUsername());
+        m.addAttribute("userIdWeAreVisiting", user.getId());
+        m.addAttribute("userWeAreVisiting", user);
         return "userDetails";
     }
 

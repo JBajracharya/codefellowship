@@ -1,20 +1,26 @@
 package com.jbajracharya.codefellowship.model;
 
+import javafx.geometry.Pos;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class ApplicationUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
+
+    @OneToMany(mappedBy = "applicationUser")
+    List<Post> posts;
+
+    public List<Post> getPosts(){
+        return this.posts;
+    }
 
     String userName;
     String password;
@@ -34,6 +40,10 @@ public class ApplicationUser implements UserDetails {
         this.lastName = lastName;
         this.date = date;
         this.bio = bio;
+    }
+
+    public long getId() {
+        return this.id;
     }
 
     @Override

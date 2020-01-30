@@ -66,6 +66,7 @@ public class ApplicationUserController {
         m.addAttribute("visitingUser", user.getUsername());
         m.addAttribute("userIdWeAreVisiting", user.getId());
         m.addAttribute("userWeAreVisiting", user);
+
         return "userDetails";
     }
 

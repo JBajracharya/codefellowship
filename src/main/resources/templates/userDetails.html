@@ -17,6 +17,17 @@
         </ul>
     </nav>
     <h1>[[${Principal}]], you are visiting [[${visitingUser}]]'s page</h1>
+
+    <form action="/user/following" method="POST">
+        <h3>Find folks to follow</h3>
+        <label for="followingOthers">User Looking to Follow</label>
+        <select name="followingOther" id="">
+            <option th:each="user : ${userWeAreVisiting" value=""></option>
+        </select>
+    </form>
+
+<!--    Write post on other users page and view all the posts on
+        that user-->
     <form action="/userDetails" method="POST">
         <ul>
             <li th:each="post: ${userWeAreVisiting.posts}">

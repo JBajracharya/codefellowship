@@ -18,9 +18,13 @@
     </nav>
     <h1>[[${Principal}]], you are visiting [[${visitingUser}]]'s page</h1>
     <form action="/userDetails" method="POST">
+        <ul>
+            <li th:each="post: ${userWeAreVisiting.posts}">
+                <p>[[${post.body}]] [[${post.createdAt}]]</p>
+            </li>
+        </ul>
         <input type="hidden" name="id" th:value="${userIdWeAreVisiting}">
-        <input type="datetime-local" name="date" hidden >
-        Message: <input type="text" name="">
+        Message: <input type="text" name="body">
         <input type="submit" name="Post">
     </form>
 

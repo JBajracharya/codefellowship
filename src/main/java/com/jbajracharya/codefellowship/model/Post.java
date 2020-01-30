@@ -1,18 +1,22 @@
 package com.jbajracharya.codefellowship.model;
 
 
+import javafx.geometry.Pos;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
+
+
 
     @ManyToOne
     ApplicationUser applicationUser;

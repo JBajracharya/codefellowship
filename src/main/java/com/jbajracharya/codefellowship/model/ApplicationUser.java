@@ -8,12 +8,28 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class ApplicationUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
+
+    @ManyToMany
+    @JoinTable(
+            name = "following",
+            joinColumns = { @JoinColumn(name = "followingOthers")},
+            inverseJoinColumns = {@JoinColumn(name = "followingMe")}
+    )
+    Set<ApplicationUser> usersIAmFollowing;
+
+    @ManyToMany(mappedBy = "usersIAmFollowing")
+    Set<ApplicationUser> usersThatAreFollowingMe;
+
+    public void followedUser(ApplicationUser usersFollowing) {
+        usersIAmFollowing.add(usersFollowing);
+    }
 
     @OneToMany(mappedBy = "applicationUser")
     List<Post> posts;
@@ -24,6 +40,15 @@ public class ApplicationUser implements UserDetails {
 
     String userName;
     String password;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
     String firstName;
     String lastName;
     String date;

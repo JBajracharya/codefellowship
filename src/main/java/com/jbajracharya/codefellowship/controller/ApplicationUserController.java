@@ -70,4 +70,17 @@ public class ApplicationUserController {
         return "userDetails";
     }
 
+    @PostMapping("/followMe")
+//    parameter name has to match with the name in the form
+    public RedirectView follow(long toBeFollowedId, Principal p) {
+        ApplicationUser follower = applicationUserRepository.findByUserName(p.getName());
+        ApplicationUser myId = applicationUserRepository.getOne(follower.getId());
+        ApplicationUser toBeFollowed = applicationUserRepository.getOne(toBeFollowedId);
+        myId.usersIAmFollowing.add(toBeFollowed);
+//        toBeFollowed.usersThatAreFollowingMe.add(follower);
+        applicationUserRepository.save(toBeFollowed);
+        return new RedirectView("/users/" + toBeFollowedId);
+
+    }
+
 }

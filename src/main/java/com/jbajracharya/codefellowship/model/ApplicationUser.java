@@ -22,10 +22,10 @@ public class ApplicationUser implements UserDetails {
             joinColumns = { @JoinColumn(name = "followingOthers")},
             inverseJoinColumns = {@JoinColumn(name = "followingMe")}
     )
-    Set<ApplicationUser> usersIAmFollowing;
+    public Set<ApplicationUser> usersIAmFollowing;
 
     @ManyToMany(mappedBy = "usersIAmFollowing")
-    Set<ApplicationUser> usersThatAreFollowingMe;
+    public Set<ApplicationUser> usersThatAreFollowingMe;
 
     public void followedUser(ApplicationUser usersFollowing) {
         usersIAmFollowing.add(usersFollowing);
@@ -40,15 +40,6 @@ public class ApplicationUser implements UserDetails {
 
     String userName;
     String password;
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
     String firstName;
     String lastName;
     String date;
@@ -71,6 +62,14 @@ public class ApplicationUser implements UserDetails {
         return this.id;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
@@ -84,6 +83,26 @@ public class ApplicationUser implements UserDetails {
     @Override
     public String getUsername() {
         return this.userName;
+    }
+
+    public Set<ApplicationUser> getUsersIAmFollowing() {
+        return usersIAmFollowing;
+    }
+
+    public Set<ApplicationUser> getUsersThatAreFollowingMe() {
+        return usersThatAreFollowingMe;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getBio() {
+        return bio;
     }
 
     @Override
@@ -105,4 +124,5 @@ public class ApplicationUser implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

@@ -21,6 +21,13 @@ public class Post {
     @ManyToOne
     ApplicationUser applicationUser;
 
+    public ApplicationUser getPostedBy() {
+        return postedBy;
+    }
+
+    @ManyToOne
+    ApplicationUser postedBy;
+
     String body;
     String createdAt;
 
@@ -40,9 +47,10 @@ public class Post {
         return createdAt;
     }
 
-    public Post(ApplicationUser applicationUser, String body) {
+    public Post(ApplicationUser applicationUser, String body, ApplicationUser postedBy) {
         this.applicationUser = applicationUser;
         this.body = body;
+        this.postedBy = postedBy;
         this.createdAt = timestamp();
     }
 

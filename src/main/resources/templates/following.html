@@ -12,13 +12,13 @@
 <body>
     <header th:insert="fragments/header.html :: header"></header>
 
-    <h2>Welcome to your profile, [[${loggedInUserName}]]</h2>
-
-
-    <ul id="posts">
-        <li th:each="post: ${loggedUser.posts}">
-            <p><span id="post">[[${post.body}]] [[${post.createdAt}]]</span></p>
-        </li>
-    </ul>
+    <h2>Following Users</h2>
+    <nav>
+        <ul>
+            <li th:each="user: ${usersFollowing}">
+                <a th:href="@{/users/{id}(id = ${user.id})}"><p>[[${user.userName}]]</p></a>
+            </li>
+        </ul>
+</nav>
 </body>
 </html>

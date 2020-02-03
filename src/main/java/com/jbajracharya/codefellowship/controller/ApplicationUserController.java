@@ -2,6 +2,9 @@ package com.jbajracharya.codefellowship.controller;
 
 import com.jbajracharya.codefellowship.model.ApplicationUser;
 import com.jbajracharya.codefellowship.model.ApplicationUserRepository;
+import com.jbajracharya.codefellowship.model.Post;
+import com.jbajracharya.codefellowship.model.PostRepository;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,6 +22,8 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 public class ApplicationUserController {
@@ -26,6 +31,9 @@ public class ApplicationUserController {
     //connect model to database
     @Autowired
     ApplicationUserRepository applicationUserRepository;
+
+    @Autowired
+    PostRepository postRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -52,9 +60,12 @@ public class ApplicationUserController {
     }
 
     @GetMapping("/profile")
-    public String showProfile( Principal p, Model m) {
+    public String showProfile(Principal p, Model m) {
         if(p != null) {
-            m.addAttribute("userName", p.getName());
+            ApplicationUser loggedUser = applicationUserRepository.findByUserName(p.getName());
+
+            m.addAttribute("loggedUser", loggedUser);
+            m.addAttribute("loggedInUserName", p.getName());
         }
         return "profile";
     }
@@ -63,6 +74,7 @@ public class ApplicationUserController {
     public String showUserDetails(@PathVariable long id, Principal p, Model m) {
         ApplicationUser user = applicationUserRepository.findById(id).get();
         m.addAttribute("Principal", p.getName());
+        m.addAttribute("loggedInUserName", p.getName());
         m.addAttribute("visitingUser", user.getUsername());
         m.addAttribute("userIdWeAreVisiting", user.getId());
         m.addAttribute("userWeAreVisiting", user);
@@ -81,6 +93,25 @@ public class ApplicationUserController {
         applicationUserRepository.save(toBeFollowed);
         return new RedirectView("/users/" + toBeFollowedId);
 
+    }
+
+    @GetMapping("/followingUsers")
+    public String usersIamFollowing(Principal p, Model m) {
+        ApplicationUser follower = applicationUserRepository.findByUserName((p.getName()));
+        m.addAttribute("loggedInUserName", follower.getUsername());
+        m.addAttribute("usersFollowing", follower.usersIAmFollowing);
+        for (ApplicationUser user: follower.usersIAmFollowing) {
+            System.out.println("user.getUserName() = " + user.getUserName());
+        }
+        return "following";
+    }
+
+    @GetMapping("/allUsers")
+    public String allUsers(Principal p, Model m) {
+        List<ApplicationUser> allUsers = applicationUserRepository.findAll();
+        m.addAttribute("loggedInUserName", p.getName());
+        m.addAttribute("allUsers", allUsers);
+        return "allMembers";
     }
 
 }

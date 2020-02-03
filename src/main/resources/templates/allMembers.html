@@ -7,14 +7,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="/style.css">
-
 </head>
 <body>
-    <h1>WELCOME TO CODEFELLOWSHIP CONNECT</h1>
-    <form action="/login" method="POST">
-        Username: <input type="text" name="username">
-        Password: <input type="password" name="password">
-        <input type="submit" value="Sign In">
-    </form>
+    <header th:insert="fragments/header.html :: header"></header>
+    <h2>CodeFellowship Connect All Members</h2>
+    <nav>
+        <ul>
+            <li th:each="user: ${allUsers}">
+                <a th:href="@{/users/{id}(id = ${user.id})}"><p>[[${user.userName}]]</p></a>
+            </li>
+        </ul>
+    </nav>
 </body>
 </html>
